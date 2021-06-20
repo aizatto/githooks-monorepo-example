@@ -1,18 +1,20 @@
 #!/bin/sh
 set -e
 
-. "$(dirname "$0")/fn.sh"
+githookspath="$(dirname "$0")"
+. "$githookspath/fn.sh"
 
-githooksdir="$(dirname "$0")"
-cd "$(dirname "$0")"/../
 
-if [ ! -d "$githooksdir/pre-commit-hooks" ]; then
+if [ ! -d "$githookspath/pre-commit-hooks" ]; then
+  debug "Directory does not exist: $githookspath/pre-commit-hooks"
 	exit 0
 fi
 
+cd $githookspath
+
 ran=false
 
-for file in $githooksdir/pre-commit-hooks/*
+for file in ./pre-commit-hooks/*
 do
   project=$(basename "$file")
 
@@ -27,11 +29,10 @@ do
 	if [ $exitCode = 1 ]; then
 		continue
 	fi
-  ran = true
+  ran=true
 
   sh -e "$file" "$@"
 done
-
 
 if [ "$ran" = false ]; then
   debug "No pre-commit hooks executed"
