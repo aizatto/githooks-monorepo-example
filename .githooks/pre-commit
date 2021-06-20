@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+# set -x
 
 githookspath="$(dirname "$0")"
 . "$githookspath/fn.sh"
@@ -12,6 +13,7 @@ fi
 
 cd $githookspath
 
+CHANGED_FILES=$(git diff --staged --diff-filter=ACDMR --name-only)
 ran=false
 
 for file in ./pre-commit-hooks/*
@@ -19,19 +21,21 @@ do
   project=$(basename "$file")
 
   set +e
-	debug "checking $project"
-  changed $project
+	debug "Checking: $project"
+  echo -e "$CHANGED_FILES" | grep "^$project" > /dev/null
 	exitCode="$?"
   set -e
 
   # "1" represents no files found
   # meaning no files have been changed, so it is safe to continue
 	if [ $exitCode = 1 ]; then
+    debug "Skipping: $project"
 		continue
 	fi
   ran=true
 
   sh -e "$file" "$@"
+  debug "Done: $project"
 done
 
 if [ "$ran" = false ]; then
