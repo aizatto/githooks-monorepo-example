@@ -13,6 +13,7 @@ fi
 
 cd $githookspath
 
+# Cache the execution
 CHANGED_FILES=$(git diff --staged --diff-filter=ACDMR --name-only)
 ran=false
 
