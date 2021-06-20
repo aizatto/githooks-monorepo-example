@@ -1,0 +1,22 @@
+#!/bin/sh
+set -x
+
+dir="$(dirname "$0")"
+
+pwd
+
+if [ ! -d "pre-commit-hooks" ]; then
+	exit 0
+fi
+
+for file in "$dir/*"
+do
+  sh -e "$dir/$file" "$@"
+  exitCode="$?"
+
+  if [ $exitCode != 0 ]; then
+    exit $exitCode
+  fi
+done
+
+exit 1
