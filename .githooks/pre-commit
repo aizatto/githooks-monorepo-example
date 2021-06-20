@@ -1,22 +1,28 @@
 #!/bin/sh
-set -x
+set -e
+
+. "$(dirname "$0")/fn.sh"
 
 dir="$(dirname "$0")"
+cd "$(dirname "$0")"/../
 
-pwd
-
-if [ ! -d "pre-commit-hooks" ]; then
+if [ ! -d "$dir/pre-commit-hooks" ]; then
 	exit 0
 fi
 
-for file in "$dir/*"
+for file in $dir/pre-commit-hooks/*
 do
-  sh -e "$dir/$file" "$@"
-  exitCode="$?"
+  basename=$(basename "$file")
 
-  if [ $exitCode != 0 ]; then
-    exit $exitCode
-  fi
+  set +e
+	debug "checking $basename"
+  changed $basename
+	exitCode="$?"
+  set -e
+
+	if [ $exitCode = 1 ]; then
+		continue
+	fi
+
+  sh -e "$file" "$@"
 done
-
-exit 1

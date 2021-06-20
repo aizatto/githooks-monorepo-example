@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/../fn.sh"
+
+echo "backend tests"
+echo "go test ./..."
+
+# go test ./...

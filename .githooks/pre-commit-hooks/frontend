@@ -1,0 +1,9 @@
+#!/bin/sh
+. "$(dirname "$0")/../fn.sh"
+
+echo "frontend tests"
+echo "yarn test --all --watchAll=false"
+echo "yarn build"
+
+# yarn test --all --watchAll=false
+# yarn build
