@@ -3,20 +3,22 @@ set -e
 
 . "$(dirname "$0")/fn.sh"
 
-dir="$(dirname "$0")"
+githooksdir="$(dirname "$0")"
 cd "$(dirname "$0")"/../
 
-if [ ! -d "$dir/pre-commit-hooks" ]; then
+if [ ! -d "$githooksdir/pre-commit-hooks" ]; then
 	exit 0
 fi
 
-for file in $dir/pre-commit-hooks/*
+ran=false
+
+for file in $githooksdir/pre-commit-hooks/*
 do
-  basename=$(basename "$file")
+  project=$(basename "$file")
 
   set +e
-	debug "checking $basename"
-  changed $basename
+	debug "checking $project"
+  changed $project
 	exitCode="$?"
   set -e
 
@@ -25,6 +27,12 @@ do
 	if [ $exitCode = 1 ]; then
 		continue
 	fi
+  ran = true
 
   sh -e "$file" "$@"
 done
+
+
+if [ "$ran" = false ]; then
+  debug "No pre-commit hooks executed"
+fi
