@@ -1,6 +1,6 @@
 # README
 
-The goal of this repository is to test out how to do precommit hoosk for a 
+The goal of this repository is to test out how to do precommit hooks for a 
 monorepo.
 
 ## Configuration
