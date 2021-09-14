@@ -1,9 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 debug() {
-  [ -n "$DEBUG_GITHOOKS" ] && echo "debug: $1"
+  if [[ ! -z "${DEBUG_GITHOOKS-}" ]];
+  then
+    echo "debug: $1"
+  fi
 }
 
 changed() {
-	git diff --staged --diff-filter=ACDMR --name-only | grep  "^$1/" > /dev/null
+  git diff --staged --diff-filter=ACDMR --name-only | grep "^$1/" >/dev/null
 }
