@@ -12,7 +12,7 @@ git config --get core.hooksPath
 
 Set configuration
 ```sh
-git config core.hooksPath $(git rev-parse --show-toplevel)/.githooks
+git config core.hooksPath .githooks
 ```
 
 Skipping hooks
