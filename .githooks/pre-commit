@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 # set -x
 
 githookspath="$(dirname "$0")"
@@ -24,9 +25,11 @@ ran=false
 for file in ./pre-commit-hooks/*; do
   project=$(basename "$file")
 
+  set +e
   debug "Checking: $project"
   echo -e "$CHANGED_FILES" | grep "^$project" >/dev/null
   exitCode="$?"
+  set -e
 
   # "1" represents no files found
   # meaning no files have been changed, so it is safe to continue
@@ -36,7 +39,9 @@ for file in ./pre-commit-hooks/*; do
   fi
   ran=true
 
-  sh -e "$file" "$@"
+  pushd ../$project
+  sh -e "../$githookspath/pre-commit-hooks/$project" "$@"
+  popd
   debug "Done: $project"
 done
 
