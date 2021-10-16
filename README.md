@@ -34,3 +34,7 @@ changed it will excute the corresponding script.
 
 - https://git-scm.com/docs/git-diff
 - https://git-scm.com/docs/githooks
+
+# Disclaimer
+
+I am by no means an expert at writing shell scripts. Please use with a grain of salt.
